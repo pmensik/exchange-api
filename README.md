@@ -1,2 +1,2 @@
-# ipex
-Library for IPEX call centrum
+# IPEX
+Library for communication with IPEX call centrum
