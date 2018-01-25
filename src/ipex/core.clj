@@ -28,7 +28,8 @@
    :socket-timeout socket})
 
 (defn make-new-call
-  [number caller-identity-mail]
+  "Issues new call to a number with provided user email"
+  [number user-email]
   (when (check-ipex-api-connection)
     (try
       (.start (Thread. (fn []
@@ -37,12 +38,13 @@
                                                     (get-timeouts 30000 30000)
                                                     {:body (json/generate-string
                                                             {:identityType :email
-                                                             :identityValue caller-identity-mail
+                                                             :identityValue user-email
                                                              :to number})}))))))
       (catch ExceptionInfo e (timbre/error "Problem connecting to the IPEX" e)))
     true))
 
 (defn get-calls-history
+  "Returns call history for given number"
   [number]
   (try
     (:body (client/get (str (:url api-config) "/calls?startTime=2001-01-01&dstNumber=" number)
@@ -50,7 +52,9 @@
                               (get-timeouts 15000 15000))))
     (catch ExceptionInfo e (timbre/error "Problem connecting to the IPEX" e))))
 
-(defn get-ipex-users []
+(defn get-ipex-users 
+  "Returns al IPEX users for provided credentials"
+  []
   (try
     (:body (client/get (str (api-config :url) "/members")
                        (merge ipex-http-client-config
