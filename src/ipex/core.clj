@@ -2,8 +2,7 @@
   (:require [clj-http.client :as client]
             [environ.core :refer [env]]
             [taoensso.timbre :as timbre]
-            [cheshire.core :as json])
-  (:import (clojure.lang ExceptionInfo)))
+            [cheshire.core :as json]))
 
 (def ^{:doc "Configuration and credentials for the IPEX API"} api-config
   {:url (str "https://" (:ipex-url env) "/api")
@@ -23,38 +22,38 @@
 (defn get-token
   "Returns auth token for further API communication. Token expires in 60 minutes"
   [user-email]
-  (:body (client/post (str (:url api-config) "/auth/token")
-                      (merge ipex-http-client-config
-                             call-timeout-settings
-                             {:form-params {:identityType "email"
-                                            :identityValue user-email}}))))
+  (try (:body (client/post (str (:url api-config) "/auth/token")
+                           (merge ipex-http-client-config
+                                  {:form-params {:identityType "email"
+                                                 :identityValue user-email}})))
+       (catch Exception ex
+         (ex-info "Problem connection to the IPEX" {:cause :ipex-api} ex))))
 
 (defn make-call
   "Issues new call to a number authenticated with user email"
   [number user-email]
-  (:body (client/post (str (:url api-config) "/calls")
-                      (merge ipex-http-client-config
-                             call-timeout-settings
-                             {:form-params {:identityType "login"
-                                            :identityValue user-email
-                                            :to number}}))))
-       ; (catch ExceptionInfo ex
-       ;   (ex-info "Problem connection to the IPEX" ex))))
+  (try (:body (client/post (str (:url api-config) "/calls")
+                           (merge ipex-http-client-config
+                                  call-timeout-settings
+                                  {:form-params {:identityType "email"
+                                                 :identityValue user-email
+                                                 :to number}})))
+       (catch Exception ex
+         (ex-info "Problem connection to the IPEX" {:cause :ipex-api} ex))))
 
 (defn get-call-history
   "Returns call history for given number"
   [number]
   (try (:body (client/get (str (:url api-config) "/calls")
                           (assoc ipex-http-client-config
-                                 :query-params {:dstNumber number
-                                                :startTime "2001-01-01"})));TODO remove time
-       (catch ExceptionInfo ex
-         (ex-info "Problem connection to the IPEX" ex))))
+                                 :query-params {:dstNumber number})))
+       (catch Exception ex
+         (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex))))
 
 (defn get-ipex-users
   "Returns al IPEX users for provided credentials"
   []
   (try (:body (client/get (str (api-config :url) "/members")
                           ipex-http-client-config))
-       (catch ExceptionInfo ex
-         (ex-info "Problem connection to the IPEX" ex))))
+       (catch Exception ex
+         (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex))))
