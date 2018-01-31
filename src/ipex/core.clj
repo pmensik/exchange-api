@@ -27,7 +27,7 @@
                                   {:form-params {:identityType "email"
                                                  :identityValue user-email}})))
        (catch Exception ex
-         (ex-info "Problem connection to the IPEX" {:cause :ipex-api} ex))))
+         (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex))))
 
 (defn make-call
   "Issues new call to a number authenticated with user email"
@@ -39,7 +39,7 @@
                                                  :identityValue user-email
                                                  :to number}})))
        (catch Exception ex
-         (ex-info "Problem connection to the IPEX" {:cause :ipex-api} ex))))
+         (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex))))
 
 (defn get-call-history
   "Returns call history for given number"
