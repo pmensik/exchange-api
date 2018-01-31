@@ -1,9 +1,18 @@
 # IPEX
 Library for communication with IPEX call centrum
 
+## Configuration
+
+You need to export following environment variables in order connect to the IPEX
+
+ - `IPEX_URL` - domain of the switch-board (for example `vh656.ipex.cz`)
+ - `IPEX_API_KEY` - API KEY (similar to the AWS one) provided by the IPEX
+ - `IPEX_API_SECRET` - API SECRET (similar to the AWS one) provided by the IPEX
+
 ## Usage in a project
 
-Create a file in `/src/spc/ipex/routes.clj` and paste needed routes for the call.
+Create a file in `/src/spc/ipex/routes.clj` and paste needed routes for the call. Then reference these routes in
+`src/spc/handler.clj`.
 
 ```
 (ns spc.api.ipex.routes
