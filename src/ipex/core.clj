@@ -22,12 +22,11 @@
 (defn get-token
   "Returns auth token for further API communication. Token expires in 60 minutes"
   [user-email]
-  (try (:body (client/post (str (:url api-config) "/auth/token")
-                           (merge ipex-http-client-config
-                                  {:form-params {:identityType "email"
-                                                 :identityValue user-email}})))
+  (try (:body (client/post (str (:url api-config) "/auth/token") (merge ipex-http-client-config
+                                                                        {:form-params {:identityType "email"
+                                                                                       :identityValue user-email}})))
        (catch Exception ex
-         (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex))))
+         (throw (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex)))))
 
 (defn make-call
   "Issues new call to a number authenticated with user email"
@@ -39,7 +38,7 @@
                                                  :identityValue user-email
                                                  :to number}})))
        (catch Exception ex
-         (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex))))
+         (throw (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex)))))
 
 (defn get-call-history
   "Returns call history for given number"
@@ -48,7 +47,7 @@
                           (assoc ipex-http-client-config
                                  :query-params {:dstNumber number})))
        (catch Exception ex
-         (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex))))
+         (throw (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex)))))
 
 (defn get-ipex-users
   "Returns al IPEX users for provided credentials"
@@ -56,4 +55,20 @@
   (try (:body (client/get (str (api-config :url) "/members")
                           ipex-http-client-config))
        (catch Exception ex
-         (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex))))
+         (throw (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex)))))
+
+(defn log-out-ipex-user
+  "Logs out IPEX user from the queue"
+  [username]
+  (try (:body (client/put (str (:url api-config) "/members/" username "/logout")
+                          ipex-http-client-config))
+       (catch Exception ex
+         (throw (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex)))))
+
+(defn log-in-ipex-user
+  "Logs in IPEX user to the queue"
+  [username]
+  (try (:body (client/put (str (:url api-config) "/members/" username "/login")
+                          ipex-http-client-config))
+       (catch Exception ex
+         (throw (ex-info "Problem connecting to the IPEX" {:cause :ipex-api} ex)))))
