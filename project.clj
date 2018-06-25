@@ -1,9 +1,8 @@
-(defproject com.temify/ipex "0.1.0-SNAPSHOT"
-  :description "Library for communication with IPEX VoIP call centru"
+(defproject com.temify/pdf-utils "0.1.0-SNAPSHOT"
+  :description "Library for easier filling of PDF forms across all Biziapp instances"
   :url "https://wwww.bizziapp.com"
 
+  :plugins [[lein-codox "0.10.4"]]
+
   :dependencies [[org.clojure/clojure "1.9.0"]
-                 [com.taoensso/timbre "4.10.0"]
-                 [environ "1.1.0"]
-                 [clj-http "3.7.0"]
-                 [cheshire "5.8.0"]])
+                 [pdfboxing "0.1.13"] ])
