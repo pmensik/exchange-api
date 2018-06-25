@@ -7,6 +7,8 @@
            (org.apache.pdfbox.multipdf PDFMergerUtility)
            (org.apache.pdfbox.preflight.parser PreflightParser)))
 
+(def ^:const pdf-content-type "application/pdf")
+
 (defn merge-pdfs
   "Merge multiple PDFs into output file. Input parameter is expected as a vector of file paths in string or InputStreams"
   [input output]
@@ -51,3 +53,12 @@
   [file]
   (when file
     (io/input-stream (io/resource file))))
+
+(defn create-file-map
+  "Creates a map for save-file function which saves files to the DB"
+  [file-path file-name]
+  (let [file (io/file file-path)]
+    {:content-type pdf-content-type
+     :size (.length file)
+     :tempfile file
+     :filename file-name}))

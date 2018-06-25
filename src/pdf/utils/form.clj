@@ -1,6 +1,7 @@
 (ns pdf.utils.form
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
+            [pdfboxing.form :refer [get-fields]]
             [pdf.utils.utils :as util])
   (:import (java.io File)
            (org.apache.pdfbox.cos COSName)
@@ -8,7 +9,7 @@
            (org.apache.pdfbox.pdmodel.font PDType0Font)
            (org.apache.pdfbox.pdmodel.interactive.form PDTextField)))
 
-(def ^{:doc "Relative path to the GentiumPlus font"} font-path 
+(def ^{:doc "Relative path to the GentiumPlus font"} font-path
   "templates/GentiumPlus-R.ttf")
 
 (defn- get-resources-with-font
@@ -36,3 +37,9 @@
     (run! #(set-field acro-form (first %) (second %)) fields)
     (.save input-pdf output-pdf)
     (.close input-pdf)))
+
+(defn select-keys-for-pdf
+  "Selects only keys from user input which matches fields in provided PDF file"
+  [form-data pdf-file]
+  (-> (into {} (map #(hash-map (name (first %)) (second %)) form-data))
+      (select-keys (keys (get-fields (util/get-pdf-template pdf-file))))))
