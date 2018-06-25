@@ -56,9 +56,9 @@
 
 (defn create-file-map
   "Creates a map for save-file function which saves files to the DB"
-  [file-path file-name]
+  [file-path]
   (let [file (io/file file-path)]
     {:content-type pdf-content-type
      :size (.length file)
      :tempfile file
-     :filename file-name}))
+     :filename (.getName file)}))
