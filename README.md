@@ -8,3 +8,7 @@ Documentation is available under [Github](https://temify.github.io/pdf-utils/) p
 
 New documentation can be pushed by following [this](https://github.com/weavejester/codox/wiki/Deploying-to-GitHub-Pages)
 tutorial.
+
+## TODOs
+
+ - rework library to use input/output streams for generated PDFs
