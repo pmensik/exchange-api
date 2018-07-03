@@ -1,6 +1,6 @@
-# PDF utils
+# EWS Clojure API
 
-Library for various PDF manipulation and form editing
+Clojure API for easy access to Microsoft Exchange services.
 
 ## Documentation
 
@@ -8,7 +8,3 @@ Documentation is available under [Github](https://temify.github.io/pdf-utils/) p
 
 New documentation can be pushed by following [this](https://github.com/weavejester/codox/wiki/Deploying-to-GitHub-Pages)
 tutorial.
-
-## TODOs
-
- - rework library to use input/output streams for generated PDFs
