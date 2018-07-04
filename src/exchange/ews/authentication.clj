@@ -1,5 +1,6 @@
 (ns exchange.ews.authentication
-  (:require [clojure.string :as str])
+  (:require [clojure.string :as str]
+            [environ.core :refer [env]])
   (:import (java.net URI)
            (microsoft.exchange.webservices.data.autodiscover IAutodiscoverRedirectionUrl)
            (microsoft.exchange.webservices.data.core ExchangeService)
@@ -25,6 +26,8 @@
 
 (defn connect-with-url
   "Connect to Exchange API via URL - user, password and url parameters has to be provided"
+  ([]
+   (:exchange-user env) (:exchange-pass env) (:exchange-url env))
   ([user password url]
    (connect-with-url user password url :ex-2010-SP2))
   ([user password url version]
@@ -36,6 +39,8 @@
 
 (defn connect-with-autodiscover
   "Connect to Exchange API via autodiscover mode - user, password parameters has to be provided"
+  ([]
+   (:exchange-user env) (:exchange-pass env))
   ([user password]
    (connect-with-url user password :ex-2010-SP2))
   ([user password version]
