@@ -21,20 +21,38 @@
           str/lower-case
           (str/starts-with? "https://")))))
 
-(defn connect-to-exchange
-  "Connects to Exchange and returns instance of ExchangeService"
-  [& {:keys [user password url version]
-      :or {version :ex-2010-SP2}}]
-  {:pre [(contains? exchange-versions version)]}
-  (doto (ExchangeService. (ExchangeVersion/valueOf (version exchange-versions)))
-    (.setCredentials (WebCredentials. user password))
-    (.setUrl (URI. url))))
+(def ^{:doc "Atom which holds instance of ExchangeService class user for API calls"} service-instance (atom nil))
+
+(defn connect-with-url
+  "Connect to Exchange API via URL - user, password and url parameters has to be provided"
+  ([user password url]
+   (connect-with-url user password url :ex-2010-SP2))
+  ([user password url version]
+   (let [service (ExchangeService. (ExchangeVersion/valueOf (version exchange-versions)))]
+     (doto service
+       (.setCredentials (WebCredentials. user password))
+       (.setUrl (URI. url)))
+     (reset! service-instance service))))
+
+(defn connect-with-autodiscover
+  "Connect to Exchange API via autodiscover mode - user, password parameters has to be provided"
+  ([user password]
+   (connect-with-url user password :ex-2010-SP2))
+  ([user password version]
+   (let [service (ExchangeService. (ExchangeVersion/valueOf (version exchange-versions)))]
+     (doto service
+       (.setCredentials (WebCredentials. user password))
+       (.autodiscoverUrl user))
+     (reset! service-instance service))))
 
 (defn impersonate-user
   "Impersonates target user via "
-  ([service email-address]
-   (impersonate-user service email-address :smtp))
-  ([service user-id impersonation-type]
+  ([email-address]
+   (impersonate-user email-address :smtp))
+  ([user-id impersonation-type]
    {:pre [contains? (impersonation-type impersonation-types)]}
-   (->> (ImpersonatedUserId. (ConnectingIdType/valueOf (impersonation-type impersonation-types)) user-id)
-        (.setImpersonatedUserId service))))
+   (let [service @service-instance
+         imp-type (ConnectingIdType/valueOf (impersonation-type impersonation-types))]
+     (->> (ImpersonatedUserId. imp-type user-id)
+          (.setImpersonatedUserId service))
+     (reset! service-instance service))))
