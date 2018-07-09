@@ -22,3 +22,11 @@
   (condp instance? value
     String :folder-id
     WellKnownFolderName :name))
+
+(defmacro do-while
+  "Provides do while loop for list-all-items"
+  [test & body]
+  `(loop []
+     ~@body
+     (when ~test
+       (recur))))

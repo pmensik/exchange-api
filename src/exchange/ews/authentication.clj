@@ -55,7 +55,7 @@
   ([email-address]
    (impersonate-user email-address :smtp))
   ([user-id impersonation-type]
-   {:pre [contains? (impersonation-type impersonation-types)]}
+   {:pre [contains? impersonation-type impersonation-types]}
    (let [service @service-instance
          imp-type (ConnectingIdType/valueOf (impersonation-type impersonation-types))]
      (->> (ImpersonatedUserId. imp-type user-id)
