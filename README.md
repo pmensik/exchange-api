@@ -1,6 +1,6 @@
 # EWS Clojure API
 
-Clojure API for easy access to Microsoft Exchange services.
+Clojure API for easy access to Microsoft Exchange services based on on [EWS Java API](https://github.com/OfficeDev/ews-java-api).
 
 ## Configuration
 
@@ -9,6 +9,7 @@ API can read configuration (such as credentials) from environment variables. Sup
  - `EXCHANGE_USER` - username for login
  - `EXCHANGE_PASS` - password for login
  - `EXCHANGE_URL` - URL to authenticate to
+ - `EXCHANGE_VERSION` - version of Exchange to which API is connecting. Defaults to 2010-SP2 (newest one in EWS)
 
 ## Documentation
 

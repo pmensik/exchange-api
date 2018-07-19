@@ -12,6 +12,8 @@
 (def ^{:doc "Exchange version supported by EWS"} exchange-versions
   {:ex-2007-SP1 "Exchange2007_SP1" :ex-2010 "Exchange2010" :ex-2010-SP1 "Exchange2010_SP1" :ex-2010-SP2 "Exchange2010_SP2"})
 
+(def ^{:doc "Default version to connect to"} default-version :ex-2010-SP2)
+
 (def ^{:doc "Impersonation types supported by API"} impersonation-types
   {:smtp "SmtpAddress" :sid "SID" :principal "PrincipalName"})
 
@@ -22,13 +24,14 @@
           str/lower-case
           (str/starts-with? "https://")))))
 
-(def ^{:doc "Atom which holds instance of ExchangeService class user for API calls"} service-instance (atom nil))
+(def ^{:doc "Atom which holds instance of ExchangeService class used for API calls"} service-instance (atom nil))
 
 (defn connect-with-url
   "Connect to Exchange API via URL - user, password and url parameters has to be provided"
   ([]
    (connect-with-url
-    (:exchange-user env) (:exchange-pass env) (:exchange-url env)))
+    (:exchange-user env) (:exchange-pass env) (:exchange-url env)
+    (or (:exchange-version env) default-version)))
   ([user password url]
    (connect-with-url user password url :ex-2010-SP2))
   ([user password url version]
@@ -42,7 +45,7 @@
   "Connect to Exchange API via autodiscover mode - user, password parameters has to be provided"
   ([]
    (connect-with-autodiscover
-    (:exchange-user env) (:exchange-pass env)))
+    (:exchange-user env) (:exchange-pass env) (or (:exchange-version env) default-version)))
   ([user password]
    (connect-with-url user password :ex-2010-SP2))
   ([user password version]
