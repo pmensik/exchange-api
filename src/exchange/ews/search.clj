@@ -82,7 +82,7 @@
   "Filter type has to be one of filters defined in search-filters map. Search field has to be value from either ItemSchema
   or EmailMessageSchema enum. Returns instance SearchFilter implementation"
   [filter-type search-field search-value]
-  {:pre? [(contains? search-filters filter-type)]}
+  {:pre [(contains? search-filters filter-type)]}
   (let [ews-filter (get search-filters filter-type)]
     (Reflector/invokeConstructor ews-filter (object-array [search-field search-value]))))
 

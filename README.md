@@ -51,7 +51,8 @@ You can set item importance and add or remove categories.
 ### Searching
 
 There are various options for searching but most importantly you create your own collections of filters and feed them to
-the API.
+the API. Fields available for filtering are specified in various enums in package`microsoft.exchange.webservices.data.core.service.schema`.
+Some fields will accept only enum values for filtering, such as `importance`.
 
 ```
 (let [filter1 (create-search-filter :contains-substring EmailMessageSchema/From "george")
