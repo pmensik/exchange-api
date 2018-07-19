@@ -1,5 +1,6 @@
 (ns exchange.ews.search
-  (:require [exchange.ews.authentication :refer [service-instance]]
+  (:require [clojure.string :as str]
+            [exchange.ews.authentication :refer [service-instance]]
             [exchange.ews.util :refer [load-property-set default-property-set do-while]])
   (:import (clojure.lang Reflector)
            (microsoft.exchange.webservices.data.core PropertySet)
@@ -31,7 +32,13 @@
                   :subject (.getSubject %)
                   :body (-> (.getBody %)
                             MessageBody/getStringFromMessageBody)
-                  :date-received (.getDateTimeReceived %)) items))
+                  :date-received (.getDateTimeReceived %)
+                  :importance (-> (.getImportance %)
+                                  str/lower-case
+                                  keyword)
+                  :categories (-> (.getCategories %)
+                                  (.getIterator)
+                                  iterator-seq)) items))
 
 (defn list-paginated-items
   "Get page of items defined by offset (defaults to 0). Folder id defaults to Inbox"
@@ -60,7 +67,7 @@
   "Creates filter collection, operator value can be :and or :or. Filters should be collection filters created via
   create-search-filter function"
   [operator filters]
-  {:pre? (contains? operators operator)}
+  {:pre? [(contains? operators operator)]}
   (SearchFilter$SearchFilterCollection. (get operator operators)
                                         (into-array filters)))
 

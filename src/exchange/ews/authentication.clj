@@ -28,7 +28,7 @@
   "Connect to Exchange API via URL - user, password and url parameters has to be provided"
   ([]
    (connect-with-url
-     (:exchange-user env) (:exchange-pass env) (:exchange-url env)))
+    (:exchange-user env) (:exchange-pass env) (:exchange-url env)))
   ([user password url]
    (connect-with-url user password url :ex-2010-SP2))
   ([user password url version]
@@ -42,7 +42,7 @@
   "Connect to Exchange API via autodiscover mode - user, password parameters has to be provided"
   ([]
    (connect-with-autodiscover
-     (:exchange-user env) (:exchange-pass env)))
+    (:exchange-user env) (:exchange-pass env)))
   ([user password]
    (connect-with-url user password :ex-2010-SP2))
   ([user password version]
@@ -57,7 +57,7 @@
   ([email-address]
    (impersonate-user email-address :smtp))
   ([user-id impersonation-type]
-   {:pre [contains? impersonation-type impersonation-types]}
+   {:pre [(contains? impersonation-types impersonation-type)]}
    (let [service @service-instance
          imp-type (ConnectingIdType/valueOf (impersonation-type impersonation-types))]
      (->> (ImpersonatedUserId. imp-type user-id)
