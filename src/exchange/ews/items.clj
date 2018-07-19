@@ -31,3 +31,11 @@
         item-cats (.getCategories item)]
     (run! #(.add item-cats %) categories)
     (.update item ConflictResolutionMode/AutoResolve)))
+
+(defn remove-category
+  "Removes category provided as a string from an item"
+  [id category]
+  (let [item (Item/bind @service-instance (ItemId/getItemIdFromString id))]
+    (-> (.getCategories item)
+        (.remove category))
+    (.update item ConflictResolutionMode/AutoResolve)))
