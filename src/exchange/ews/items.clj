@@ -25,7 +25,7 @@
     (.update item ConflictResolutionMode/AutoResolve)))
 
 (defn add-categories
-  "Adds category to an item"
+  "Adds categories provided as a vector of strings to an item"
   [id categories]
   (let [item (Item/bind @service-instance (ItemId/getItemIdFromString id))
         item-cats (.getCategories item)]
@@ -38,4 +38,12 @@
   (let [item (Item/bind @service-instance (ItemId/getItemIdFromString id))]
     (-> (.getCategories item)
         (.remove category))
+    (.update item ConflictResolutionMode/AutoResolve)))
+
+(defn remove-categories
+  "Removes categories provided as a vector of strings from an item"
+  [id categories]
+  (let [item (Item/bind @service-instance (ItemId/getItemIdFromString id))
+        item-cats (.getCategories item)]
+    (run! #(.remove item-cats %) categories)
     (.update item ConflictResolutionMode/AutoResolve)))
