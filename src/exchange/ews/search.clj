@@ -98,13 +98,3 @@
          result (.findItems @service-instance folder filters view)]
      (load-property-set result)
      (.getItems result))))
-
-(defn get-emails-by-recipient
-  "Returns all emails filtered by receipient"
-  [email]
-  (let [view (ItemView. Integer/MAX_VALUE)
-        filters [(create-search-filter :contains-substring EmailMessageSchema/From email)]
-        result (.findItems @service-instance WellKnownFolderName/Inbox
-                           (create-filter-collection :or filters) view)]
-    (load-property-set result)
-    (.getItems result)))

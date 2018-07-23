@@ -14,7 +14,8 @@
   ([results]
    (load-property-set default-property-set results))
   ([property-set results]
-   (.loadPropertiesForItems @service-instance results property-set)))
+   (when-not (empty? (.getItems results))
+     (.loadPropertiesForItems @service-instance results property-set))))
 
 (defn enum-id-cond
   "Conditions used to determine which multimethod to call with for correct type"
