@@ -18,7 +18,8 @@ Documentation is available under [Github](https://temify.github.io/ews-clojure-a
 ## Logging in
 
 You can connect either via provided URL or with Exchange autodiscover feature. Credentials will be read from environment
-if you don't provide any parameters. See corresponding functions in `exchange.ews.authentication` namespace.
+if you don't provide any parameters. See corresponding functions in `exchange.ews.authentication` namespace. Exchange
+service object is than stored in an atom and used for all subsequent API calls.
 
 ## Examples
 
@@ -33,7 +34,12 @@ You can impersonate user who will be used for all subsequent calls to the API wi
 
 ### Folders
 
-Folder manipulation
+Folders can be found via their known name (value from enum `WellKnownFolderName`) or id provided as a string. Same
+applies for creating new folder where parent folder can also be specified as a known name or id.
+
+#### Get inbox
+
+`(exchange.ews.folders/get-inbox)`
 
 #### Get folder
 
@@ -47,7 +53,15 @@ Get folder by name `(exchange.ews.folders/get-folder WellKnownFolderName/Inbox)`
 
 You can set item importance and add or remove categories.
 
-`(exchange.ews.items/set-item-importance "string-id" :high)`
+```
+(exchange.ews.items/set-item-importance "string-id" :high)
+
+(exchange.ews.items/add-category "string-id" "category1")
+
+(exchange.ews.items/add-categories "string-id" ["cat1" "cat2"])
+
+(exchange.ews.items/remove-category "string-id" "category1")
+```
 
 ### Searching
 

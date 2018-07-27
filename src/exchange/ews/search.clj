@@ -6,6 +6,7 @@
            (microsoft.exchange.webservices.data.core.enumeration.property WellKnownFolderName)
            (microsoft.exchange.webservices.data.core.enumeration.search LogicalOperator)
            (microsoft.exchange.webservices.data.core.service.schema EmailMessageSchema ItemSchema)
+           (microsoft.exchange.webservices.data.core.service.item EmailMessage)
            (microsoft.exchange.webservices.data.property.complex MessageBody)
            (microsoft.exchange.webservices.data.search ItemView)
            (microsoft.exchange.webservices.data.search.filter SearchFilter
@@ -40,6 +41,9 @@
                   :subject (.getSubject %)
                   :body (-> (.getBody %)
                             MessageBody/getStringFromMessageBody)
+                  :from (when (instance? EmailMessage %)
+                          (-> (cast EmailMessage %)
+                              .getFrom .getAddress))
                   :date-received (.getDateTimeReceived %)
                   :importance (-> (.getImportance %)
                                   str/lower-case
@@ -47,29 +51,6 @@
                   :categories (-> (.getCategories %)
                                   (.getIterator)
                                   iterator-seq)) items))
-
-(defn list-paginated-items
-  "Get page of items defined by offset (defaults to 0). Folder id defaults to Inbox"
-  ([limit]
-   (list-paginated-items WellKnownFolderName/Inbox limit 0))
-  ([limit offset]
-   (list-paginated-items WellKnownFolderName/Inbox limit offset))
-  ([folder-id limit offset]
-   (let [view (ItemView. limit offset)
-         result (.findItems @service-instance folder-id view)]
-     (load-property-set result)
-     (.getItems result))))
-
-(defn list-all-items
-  "List all items in folder without pagination. Folder id can be both string id or enumeration of well know name,
-  defaults to Inbox"
-  ([]
-   (list-all-items WellKnownFolderName/Inbox))
-  ([folder-id]
-   (let [view (ItemView. Integer/MAX_VALUE)
-         result (.findItems @service-instance folder-id view)]
-     (load-property-set result)
-     (.getItems result))))
 
 (defn create-filter-collection
   "Creates filter collection, operator value can be :and or :or. Filters should be seq of filters created via
@@ -88,13 +69,18 @@
 
 (defn get-items-with-filter
   "Search for items with filters created by `create-search-filter` and `create-filter-collection` functions. You can optionally
-  specify folder to search in and result limit"
+  specify folder to search in, result limit and offset. Functions called without any arguments will return all items in
+  Inbox folder"
+  ([]
+   (get-items-with-filter nil))
   ([filters]
-   (get-items-with-filter filters WellKnownFolderName/Inbox Integer/MAX_VALUE))
-  ([filters folder]
-   (get-items-with-filter filters folder Integer/MAX_VALUE))
-  ([filters folder limit]
-   (let [view (ItemView. limit)
+   (get-items-with-filter filters Integer/MAX_VALUE))
+  ([filters limit]
+   (get-items-with-filter filters limit 0))
+  ([filters limit offset]
+   (get-items-with-filter filters limit offset WellKnownFolderName/Inbox))
+  ([filters limit offset folder]
+   (let [view (ItemView. limit offset)
          result (.findItems @service-instance folder filters view)]
      (load-property-set result)
      (.getItems result))))
