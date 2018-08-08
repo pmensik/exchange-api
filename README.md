@@ -54,13 +54,15 @@ Get folder by name `(exchange.ews.folders/get-folder WellKnownFolderName/Inbox)`
 You can set item importance and add or remove categories.
 
 ```
-(exchange.ews.items/set-item-importance "string-id" :high)
+(in-ins 'exchange.ews.items)
 
-(exchange.ews.items/add-category "string-id" "category1")
+(set-item-importance "string-id" :high)
 
-(exchange.ews.items/add-categories "string-id" ["cat1" "cat2"])
+(add-category "string-id" "category1")
 
-(exchange.ews.items/remove-category "string-id" "category1")
+(add-categories "string-id" ["cat1" "cat2"])
+
+(remove-category "string-id" "category1")
 ```
 
 ### Searching
@@ -70,9 +72,30 @@ the API. Fields available for filtering are specified in various enums in packag
 Some fields will accept only enum values for filtering, such as `importance`.
 
 ```
+(in-ins 'exchange.ews.search)
+
 (let [filter1 (create-search-filter :contains-substring EmailMessageSchema/From "george")
       filter2 (create-search-filter :is-greater-than ItemSchema/DateTimeSent (java.util.Date.))
       collection (create-filter-collection :or [filter1 filter2])]
   (-> (get-items-with-filter collection) ; optionally specify parent folder or limit
       (transform-search-result))) ; Transforms result from Java objects to Clojure map
+```
+
+### Calendar
+
+You can both search and create appointments via Exchange API.
+
+```
+(in-ins 'exchange.ews.calendar)
+
+(create-appointment "Meeting" (java.util.Date.) (java.util.Date.) :location "London" :body
+"Invitation")
+```
+
+Searching defaults to beginning and end of the current month (but you can of course specify both parameters).
+
+```
+(in-ins 'exchange.ews.calendar)
+
+(transform-appointments (get-all-appointments))
 ```

@@ -1,4 +1,4 @@
-(defproject com.temify/ews-clojure-api "0.0.4"
+(defproject com.temify/ews-clojure-api "0.0.5"
   :description "Utility library for accessing Microsoft Exchange"
   :url "https://wwww.bizziapp.com"
 
@@ -6,4 +6,5 @@
 
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [com.microsoft.ews-java-api/ews-java-api "2.0"]
+                 [clj-time "0.14.4"]
                  [environ "1.1.0"]])
