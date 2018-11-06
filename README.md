@@ -1,6 +1,6 @@
 # EWS Clojure API
 
-Clojure API for easy access to Microsoft Exchange services based on on [EWS Java API](https://github.com/OfficeDev/ews-java-api).
+Clojure API for easy access to Microsoft Exchange services based on on [EWS Java API](https://github.com/OfficeDev/ews-java-api). This API also supports streaming notifications provided by EWS API in order to receive Exchange events.
 
 ## Configuration
 
@@ -98,4 +98,28 @@ Searching defaults to beginning and end of the current month (but you can of cou
 (in-ins 'exchange.ews.calendar)
 
 (transform-appointments (get-all-appointments))
+```
+
+
+### Streaming notifications
+
+There are two functions to start notification listener, one listen to changes on all folders, the other takes list of
+folders on which will listen to events.
+
+#### Example
+First you need to implement your notification handler function which will receive an event. You can also implememnt disconnect function (default one just connects back to the API). Also check `on-notification-event` and `on-disconnect` functions defined in namespace.
+```
+(def my-notification-event
+  (reify StreamingSubscriptionConnection$INotificationEventDelegate ; you have implement the EWS interface
+    (notificationEventDelegate [_ sender event-args]
+      (run! (fn [event]
+              (log/info "Event type" (.name (.getEventType event))) ; Check for EventType (enum)
+              (log/info "Item id" (.getUniqueId (.getItemId event))) ; Check for Exchange ItemId which have changed
+              ) (.getEvents event-args)))))
+```
+Then call function with following args
+```
+(let [events #{:created :deleted} ; Events to listen to
+      folders [(FolderId. (WellKnownFolderName/Calendar))]] ; Vector of folders
+  (create-streaming-notification events folders my-notification-event))
 ```
