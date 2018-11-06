@@ -5,10 +5,12 @@
             [exchange.ews.util :refer [load-property-set]])
   (:import (java.util Date)
            (microsoft.exchange.webservices.data.core.service.folder CalendarFolder)
+           (microsoft.exchange.webservices.data.core.enumeration.service DeleteMode)
            (microsoft.exchange.webservices.data.core.service.item Appointment)
            (microsoft.exchange.webservices.data.core.enumeration.property WellKnownFolderName)
            (microsoft.exchange.webservices.data.property.complex MessageBody
-                                                                 StringList)
+                                                                 StringList
+                                                                 ItemId)
            (microsoft.exchange.webservices.data.search CalendarView)))
 
 (defn transform-appointments
@@ -52,3 +54,11 @@
         (.setLocation location)
         (.setCategories (StringList. categories)))
       (.save)))
+
+(defn delete-appointment
+  "Deletes appointment - default mode defaults to HardDelete. Otherwise accepts value from DeleteMode enum"
+  ([id]
+   (delete-appointment id DeleteMode/HardDelete))
+  ([id delete-mode]
+   (-> (Appointment/bind @service-instance (ItemId/getItemIdFromString id))
+       (.delete delete-mode))))

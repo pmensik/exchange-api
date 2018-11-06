@@ -1,6 +1,7 @@
 (ns exchange.ews.authentication
   (:require [clojure.string :as str]
-            [environ.core :refer [env]])
+            [environ.core :refer [env]]
+            [taoensso.timbre :as log])
   (:import (java.net URI)
            (microsoft.exchange.webservices.data.autodiscover IAutodiscoverRedirectionUrl)
            (microsoft.exchange.webservices.data.core ExchangeService)
@@ -39,6 +40,7 @@
      (doto service
        (.setCredentials (WebCredentials. user password))
        (.setUrl (URI. url)))
+     (log/info "Connected to Exchange via URL")
      (reset! service-instance service))))
 
 (defn connect-with-autodiscover
@@ -53,6 +55,7 @@
      (doto service
        (.setCredentials (WebCredentials. user password))
        (.autodiscoverUrl user))
+     (log/info "Connected to Exchange via autodiscover")
      (reset! service-instance service))))
 
 (defn impersonate-user
