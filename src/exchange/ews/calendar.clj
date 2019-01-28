@@ -46,7 +46,7 @@
 (defn create-appointment
   "Creates new appointment and saves it"
   [subject ^Date from ^Date to & {:keys [body location categories]}]
-  (-> (doto (Appointment. @service-instance)
+  (doto (doto (Appointment. @service-instance)
         (.setSubject subject)
         (.setStart from)
         (.setEnd to)
