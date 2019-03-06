@@ -5,7 +5,8 @@
             [exchange.ews.util :refer [load-property-set]])
   (:import (java.util Date)
            (microsoft.exchange.webservices.data.core.service.folder CalendarFolder)
-           (microsoft.exchange.webservices.data.core.enumeration.service DeleteMode)
+           (microsoft.exchange.webservices.data.core.enumeration.service ConflictResolutionMode
+                                                                         DeleteMode)
            (microsoft.exchange.webservices.data.core.service.item Appointment)
            (microsoft.exchange.webservices.data.core.enumeration.property WellKnownFolderName)
            (microsoft.exchange.webservices.data.property.complex MessageBody
@@ -47,13 +48,13 @@
   "Creates new appointment and saves it"
   [subject ^Date from ^Date to & {:keys [body location categories]}]
   (doto (doto (Appointment. @service-instance)
-        (.setSubject subject)
-        (.setStart from)
-        (.setEnd to)
-        (.setBody (MessageBody/getMessageBodyFromText body))
-        (.setLocation location)
-        (.setCategories (StringList. categories)))
-      (.save)))
+          (.setSubject subject)
+          (.setStart from)
+          (.setEnd to)
+          (.setBody (MessageBody/getMessageBodyFromText body))
+          (.setLocation location)
+          (.setCategories (StringList. categories)))
+    (.save)))
 
 (defn delete-appointment
   "Deletes appointment - default mode defaults to HardDelete. Otherwise accepts value from DeleteMode enum"
@@ -62,3 +63,14 @@
   ([id delete-mode]
    (-> (Appointment/bind @service-instance (ItemId/getItemIdFromString id))
        (.delete delete-mode))))
+
+(defn edit-appointment
+  "Modifies appointment by its unique id"
+  [appointment]
+  (let [app (Appointment/bind @service-instance (ItemId/getItemIdFromString (:id appointment)))]
+    (doto (doto app
+            (.setSubject (:subject appointment))
+            (.setBody (MessageBody/getMessageBodyFromText (:body appointment)))
+            (.setStart (:start-date appointment))
+            (.setEnd (:end-date appointment)))
+      (.update ConflictResolutionMode/AutoResolve))))
