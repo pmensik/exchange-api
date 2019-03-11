@@ -29,6 +29,7 @@
                                   iterator-seq)
                   :start-date (.getStart %)
                   :end-date (.getEnd %)
+                  :all-day (.getIsAllDayEvent %)
                   :duration (.toString (.getDuration %))) appointments))
 
 (defn get-all-appointments
@@ -45,15 +46,16 @@
      (.getItems results))))
 
 (defn create-appointment
-  "Creates new appointment and saves it"
-  [subject ^Date from ^Date to & {:keys [body location categories]}]
+
+  [subject ^Date from ^Date to & {:keys [body location categories all-day]}]
   (doto (doto (Appointment. @service-instance)
           (.setSubject subject)
           (.setStart from)
           (.setEnd to)
           (.setBody (MessageBody/getMessageBodyFromText body))
           (.setLocation location)
-          (.setCategories (StringList. categories)))
+          (.setCategories (StringList. categories))
+          (.setIsAllDayEvent all-day))
     (.save)))
 
 (defn delete-appointment
@@ -72,5 +74,6 @@
             (.setSubject (:subject appointment))
             (.setBody (MessageBody/getMessageBodyFromText (:body appointment)))
             (.setStart (:start-date appointment))
-            (.setEnd (:end-date appointment)))
+            (.setEnd (:end-date appointment))
+            (.setIsAllDayEvent (:all-day appointment)))
       (.update ConflictResolutionMode/AutoResolve))))

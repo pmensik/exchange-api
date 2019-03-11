@@ -1,4 +1,4 @@
-(defproject com.temify/ews-clojure-api "0.0.8"
+(defproject com.temify/ews-clojure-api "0.0.9"
   :description "Utility library for accessing Microsoft Exchange"
   :url "https://wwww.bizziapp.com"
 
