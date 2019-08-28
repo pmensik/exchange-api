@@ -46,7 +46,6 @@
      (.getItems results))))
 
 (defn create-appointment
-
   [subject ^Date from ^Date to & {:keys [body location categories all-day]}]
   (doto (doto (Appointment. @service-instance)
           (.setSubject subject)

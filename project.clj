@@ -1,6 +1,11 @@
-(defproject com.temify/ews-clojure-api "0.0.9"
+(defproject pmensik/ews-clojure "0.1.0"
   :description "Utility library for accessing Microsoft Exchange"
-  :url "https://wwww.bizziapp.com"
+  :url "https://github.com/pmensik/ews-clojure"
+  :license {:name "Eclipse Public License"
+            :url "http://www.eclipse.org/legal/epl-v10.html"
+            :distribution :repo
+            :comments "Same as Clojure"}
+  :output-path "codox"
 
   :plugins [[lein-codox "0.10.4"]]
 
