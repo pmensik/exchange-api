@@ -1,6 +1,6 @@
-(defproject pmensik/ews-clojure "0.1.0"
+(defproject pmensik/echange-api "0.1.0"
   :description "Utility library for accessing Microsoft Exchange"
-  :url "https://github.com/pmensik/ews-clojure"
+  :url "https://github.com/pmensik/exchange-api"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"
             :distribution :repo

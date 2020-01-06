@@ -1,4 +1,4 @@
-# EWS Clojure API
+# EWS Clojure API [![CircleCI](https://circleci.com/gh/pmensik/exchange-api/tree/master.svg?style=svg)](https://circleci.com/gh/pmensik/exchange-api/tree/master)
 
 Clojure API for easy access to Microsoft Exchange services based on on [EWS Java API](https://github.com/OfficeDev/ews-java-api). This API also supports streaming notifications provided by EWS API in order to receive Exchange events.
 
