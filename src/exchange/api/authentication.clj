@@ -1,4 +1,4 @@
-(ns exchange.ews.authentication
+(ns exchange.api.authentication
   (:require [clojure.string :as str]
             [environ.core :refer [env]]
             [taoensso.timbre :as log])

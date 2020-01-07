@@ -1,7 +1,7 @@
-(ns exchange.ews.search
+(ns exchange.api.search
   (:require [clojure.string :as str]
-            [exchange.ews.authentication :refer [service-instance]]
-            [exchange.ews.util :refer [load-property-set default-property-set do-while]])
+            [exchange.api.authentication :refer [service-instance]]
+            [exchange.api.util :refer [load-property-set default-property-set do-while]])
   (:import (clojure.lang Reflector)
            (microsoft.exchange.webservices.data.core.enumeration.property WellKnownFolderName)
            (microsoft.exchange.webservices.data.core.enumeration.search LogicalOperator)

@@ -1,5 +1,5 @@
-(ns exchange.ews.items
-  (:require [exchange.ews.authentication :refer [service-instance]])
+(ns exchange.api.items
+  (:require [exchange.api.authentication :refer [service-instance]])
   (:import (microsoft.exchange.webservices.data.core.service.item Item)
            (microsoft.exchange.webservices.data.core.enumeration.property Importance)
            (microsoft.exchange.webservices.data.core.enumeration.service ConflictResolutionMode)

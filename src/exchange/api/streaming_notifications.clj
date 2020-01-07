@@ -1,7 +1,7 @@
-(ns exchange.ews.streaming-notifications
+(ns exchange.api.streaming-notifications
   (:require [clojure.string :as str]
             [clojure.set :as clj-set]
-            [exchange.ews.authentication :refer [service-instance]]
+            [exchange.api.authentication :refer [service-instance]]
             [taoensso.timbre :as log])
   (:import (microsoft.exchange.webservices.data.core.enumeration.notification EventType)
            (microsoft.exchange.webservices.data.notification StreamingSubscription)

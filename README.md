@@ -2,6 +2,13 @@
 
 Clojure API for easy access to Microsoft Exchange services based on on [EWS Java API](https://github.com/OfficeDev/ews-java-api). This API also supports streaming notifications provided by EWS API in order to receive Exchange events.
 
+## Getting started
+
+Add the dependency to your project:
+
+```clojure
+    [pmensik/exchange-api "0.1.1"]
+```
 ## Configuration
 
 API can read configuration (such as credentials) from environment variables. Supported configration options are

@@ -1,8 +1,8 @@
-(ns exchange.ews.calendar
+(ns exchange.api.calendar
   (:require [clj-time.core :as clj-time]
             [clojure.string :as str]
-            [exchange.ews.authentication :refer [service-instance]]
-            [exchange.ews.util :refer [load-property-set]])
+            [exchange.api.authentication :refer [service-instance]]
+            [exchange.api.util :refer [load-property-set]])
   (:import (java.util Date)
            (microsoft.exchange.webservices.data.core.service.folder CalendarFolder)
            (microsoft.exchange.webservices.data.core.enumeration.service ConflictResolutionMode

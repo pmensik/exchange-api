@@ -1,6 +1,6 @@
-(ns exchange.ews.folders
-  (:require [exchange.ews.authentication :refer [service-instance]]
-            [exchange.ews.util :refer [enum-id-cond]])
+(ns exchange.api.folders
+  (:require [exchange.api.authentication :refer [service-instance]]
+            [exchange.api.util :refer [enum-id-cond]])
   (:import (microsoft.exchange.webservices.data.core.service.folder Folder)
            (microsoft.exchange.webservices.data.core.enumeration.property WellKnownFolderName)
            (microsoft.exchange.webservices.data.property.complex FolderId)

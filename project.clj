@@ -1,4 +1,4 @@
-(defproject pmensik/echange-api "0.1.0"
+(defproject pmensik/exchange-api "0.1.1"
   :description "Utility library for accessing Microsoft Exchange"
   :url "https://github.com/pmensik/exchange-api"
   :license {:name "Eclipse Public License"

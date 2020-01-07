@@ -1,5 +1,5 @@
-(ns exchange.ews.util
-  (:require [exchange.ews.authentication :refer [service-instance]])
+(ns exchange.api.util
+  (:require [exchange.api.authentication :refer [service-instance]])
   (:import (microsoft.exchange.webservices.data.core PropertySet)
            (microsoft.exchange.webservices.data.core.enumeration.property BasePropertySet
                                                                           BodyType

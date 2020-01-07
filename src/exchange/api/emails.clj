@@ -1,5 +1,5 @@
-(ns exchange.ews.emails
-  (:require [exchange.ews.authentication :refer [service-instance]])
+(ns exchange.api.emails
+  (:require [exchange.api.authentication :refer [service-instance]])
   (:import (microsoft.exchange.webservices.data.core.service.item EmailMessage)
            (microsoft.exchange.webservices.data.property.complex MessageBody)))
 
